@@ -3,11 +3,12 @@ const fs = require("fs");
 const Discord = require("discord.js")
 const config = require("./config.json")
 const path = require('path')
-// Necessary Variables/Required
+// Necessary Variables/Required CLIENT STUFF
 const client = new Discord.Client();
 client.commands = new Discord.Collection()
 client.servercache = new Map
 servercache = client.servercache // Set servercache to be equal to client.servercache (this just makes it easier to call servercache, looks less congested)
+// Required modules 
 
 // Export from app.js
 module.exports = {
@@ -77,13 +78,34 @@ client.on("message", message => {
             if(!client.commands.has(command)) return; // Return if the command does not exist
             //
             let cmd = client.commands.get(command); 
-            if(args[0] == "info") return message.channel.send(info.embed(cmd.name, message.author.username, cmd.description, cmd.input))
-            if(command == "config"){
+
+            if(args[0] == "info") return message.channel.send(info.embed(cmd.name, message.author.username, cmd.description, cmd.input)) // Send an embed that tells the user about the specified command
+            
+            
+            if(command == "config" && !client.servercache.get(message.guild.id).logid){ // If the config command was run, run it regardless of no logs enabled.
                 client.commands.get(command).run(client, message, args);
             }
-            if(!client.servercache.get(message.guild.id).logid) return (message.channel.send(`Error: No log channel has been set. This bot requires a log channel to keep logs. If you are unsure of how to do this, please use .config logchannel <#channel>`))
             
-            client.commands.get(command).run(client, message, args);
+            
+            // If the server has no log channel specified, but also have logs enabled, return.
+            if(!client.servercache.get(message.guild.id).logid && client.servercache.get(message.guild.id).logsenabled == "true") return (message.channel.send(`Error: No log channel has been set, however, you have logs enabled. This bot requires a log channel to keep logs. If you are unsure of how to do this, please use .config logchannel <#channel>`))
+            
+            // If the server has logs enabled.
+           // if(client.servercache.get(message.guild.id).logsenabled == "true"){
+            //    const logid = client.servercache.get(message.guild.id).logid
+            //    client.channels.cache.get(logid).send(logembed.embed(module.exports.name, args.slice(command), message, user))
+
+            //    .catch((err) => {
+            //        message.channel.send(err)
+            //        console.log(err)
+             //   })
+           // }
+
+
+            
+
+            client.commands.get(command).run(client, message, args); // Get the command that was sent and run it (If it bypasses all of the checks)
+
 
 
 

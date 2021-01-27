@@ -19,7 +19,8 @@ module.exports = {
         let serverinfo = {
             serverjoinedname: guild.name,
             serverid: guild.id,
-            prefix: "."
+            prefix: ".",
+            logsenabled: "true"
         }
 
         let data = JSON.stringify(serverinfo);
@@ -27,9 +28,8 @@ module.exports = {
         serverdir = fs.writeFileSync(`C:\\Users\\Jared\\Desktop\\Lydian\\bot\\data\\servers\\${guild.id}.JSON`, data)
         client.servercache.set(guild.id, serverinfo);
 
-        if(channel) return msg = channel.send("**Use .config to begin with the setup of Lydian.**").then(msg => {
-            msg.delete(5000)
-        });
+        if(channel) return msg = channel.send("**Use .config to begin with the setup of Lydian.**");
+
 
 
         }

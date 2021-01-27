@@ -7,7 +7,7 @@ module.exports = {
     name: 'help',
     description: `returns an embed message featuring a website link that provides access to see a list of available commands.`,
     input: `This command does not support any arguments.`,
-	run(message) {
+	run: async(client, message, args) => {
 		
             let hembed = new Discord.MessageEmbed()
             .setTitle(`Need some help?`)
