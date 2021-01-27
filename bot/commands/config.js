@@ -13,6 +13,7 @@ module.exports = {
         if(args[0] === "prefix"){
             if(message.content.split(' ').length > 3) return message.reply(`Error: prefix only supports 3 arguments. Please use ${module.exports.name} prefix <prefix>`)
             const newprefix = message.content.split(' ')[2];
+            if(!newprefix) return message.channel.send("Error: No prefix was specified!")
 
             let serverfile = fs.readFileSync(`C:\\Users\\Jared\\Desktop\\Lydian\\bot\\data\\servers\\${message.guild.id}.JSON`) // read the server file
             let olddata = JSON.parse(serverfile) // parse the old data
